@@ -3,9 +3,7 @@
 import { PlusIcon } from "@heroicons/react/24/solid";
 import { useRouter } from "next/navigation";
 
-
-
-const FloatingAddButton = ({path}: {path: string}) => {
+const FloatingAddButton = ({ path }: { path: string }) => {
   const router = useRouter();
 
   return (

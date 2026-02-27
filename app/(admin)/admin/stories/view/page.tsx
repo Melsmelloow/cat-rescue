@@ -1,6 +1,6 @@
 "use client";
 
-import FloatingAddButton from "@/app/components/FloatingAddButton";
+import FloatingAddButton from "@/app/container/FloatingAddButton";
 import StoryCard from "@/app/container/StoryCard";
 import { TStory } from "@/types/story";
 import { useCallback, useEffect, useRef, useState } from "react";
@@ -70,7 +70,7 @@ export default function StoryFeed() {
     <>
       <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 p-6">
         {stories.map((story) => (
-          <StoryCard story={story} />
+          <StoryCard story={story} key={story._id} />
         ))}
       </div>
 

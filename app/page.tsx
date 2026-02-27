@@ -1,5 +1,6 @@
 "use client";
-import Hero from "./components/Hero";
+import FeaturedStories from "./container/FeaturedStories";
+import Hero from "./container/Hero";
 
 export default function Home() {
   return (
@@ -13,6 +14,11 @@ font-sans"
     >
       <main className="flex min-h-screen w-full max-w-3xl flex-col items-center justify-between py-10 px-1sm:items-start">
         <Hero />
+        <FeaturedStories/>
+        {/* Feature stories */}
+        {/* About */}
+        {/* Donation */}
+        {/* Contact */}
       </main>
     </div>
   );

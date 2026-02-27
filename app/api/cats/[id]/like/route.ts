@@ -6,17 +6,14 @@ import { CatLike } from "@/models/CatLike";
 
 export async function GET(
   req: NextRequest,
-  { params }: { params: Promise<{ id: string }> }
+  { params }: { params: Promise<{ id: string }> },
 ) {
   await connectDB();
 
   const { id } = await params;
 
   if (!mongoose.Types.ObjectId.isValid(id)) {
-    return NextResponse.json(
-      { error: "Invalid cat ID" },
-      { status: 400 }
-    );
+    return NextResponse.json({ error: "Invalid cat ID" }, { status: 400 });
   }
 
   const deviceId = req.nextUrl.searchParams.get("deviceId");
@@ -24,7 +21,7 @@ export async function GET(
   if (!deviceId) {
     return NextResponse.json(
       { error: "deviceId is required" },
-      { status: 400 }
+      { status: 400 },
     );
   }
 

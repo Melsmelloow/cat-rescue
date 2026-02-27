@@ -1,4 +1,8 @@
-import { ALLOWED_TYPES, MAX_IMAGE_SIZE, MAX_IMAGES } from "@/app/constant/images";
+import {
+  ALLOWED_TYPES,
+  MAX_IMAGE_SIZE,
+  MAX_IMAGES,
+} from "@/app/constant/images";
 import cloudinary from "@/lib/cloudinary";
 import { connectDB } from "@/lib/mongodb";
 import { Cat } from "@/models/Cats";

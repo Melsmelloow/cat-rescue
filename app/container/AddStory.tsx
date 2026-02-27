@@ -10,7 +10,7 @@ import { Badge } from "@/components/ui/badge";
 import { X } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { toast, ToastContainer } from "react-toastify";
-import Loading from "@/app/components/Loading";
+import Loading from "@/app/container/Loading";
 import { Checkbox } from "@/components/ui/checkbox";
 
 interface Cat {
@@ -148,7 +148,7 @@ const AddStory: FC<AddStoryProps> = ({ cats }) => {
       toast.success("Story created successfully 🎉");
 
       setTimeout(() => {
-        router.push("/admin/stories");
+        router.push("/admin/stories/view");
       }, 1000);
     } catch (error: any) {
       setErrors({ general: error.message });

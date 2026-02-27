@@ -1,5 +1,5 @@
 import { connectDB } from "@/lib/mongodb";
-import { Stories , } from "@/models/Stories";
+import { Stories } from "@/models/Stories";
 import "@/models/Cats";
 import { NextRequest, NextResponse } from "next/server";
 import mongoose from "mongoose";
@@ -40,8 +40,17 @@ export async function GET(req: NextRequest) {
 
   let nextCursor = null;
 
-  if (stories.length > limit) {
-    const last = stories[limit - 1];
+  const formattedStories = stories.map((story) => ({
+    ...story,
+    _id: story._id.toString(),
+    cats: story.cats.map((cat: any) => ({
+      ...cat,
+      _id: cat._id.toString(),
+    })),
+  }));
+
+  if (formattedStories.length > limit) {
+    const last = formattedStories[limit - 1];
 
     nextCursor = Buffer.from(
       JSON.stringify({
@@ -50,11 +59,11 @@ export async function GET(req: NextRequest) {
       }),
     ).toString("base64");
 
-    stories.splice(limit);
+    formattedStories.splice(limit);
   }
 
   return NextResponse.json({
-    data: stories,
+    data: formattedStories,
     nextCursor,
   });
 }

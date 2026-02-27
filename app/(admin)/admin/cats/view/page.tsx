@@ -1,6 +1,6 @@
 "use client";
 
-import FloatingAddButton from "@/app/components/FloatingAddButton";
+import FloatingAddButton from "@/app/container/FloatingAddButton";
 import CatList from "@/app/container/CatList";
 import { ICat } from "@/models/Cats";
 import { useCallback, useEffect, useRef, useState } from "react";

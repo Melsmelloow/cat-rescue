@@ -10,7 +10,7 @@ import { Badge } from "@/components/ui/badge";
 import { X } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { toast, ToastContainer } from "react-toastify";
-import Loading from "@/app/components/Loading";
+import Loading from "@/app/container/Loading";
 
 interface AddCatProps {}
 

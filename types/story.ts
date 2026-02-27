@@ -1,4 +1,4 @@
-export type Story = {
+export type TStory = {
   _id: string;
   caption: string;
   coverImage: string;
@@ -6,4 +6,5 @@ export type Story = {
   likes: number;
   featured: boolean;
   cats: { _id: string; name: string }[];
+  createdAt: string;
 };

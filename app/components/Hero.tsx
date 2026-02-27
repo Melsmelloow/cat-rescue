@@ -1,5 +1,6 @@
 "use client";
 import { motion, Transition } from "motion/react";
+import Image from "next/image";
 import { FC } from "react";
 
 interface HeroProps {}
@@ -16,7 +17,7 @@ const Hero: FC<HeroProps> = () => {
     <section className="min-h-screen flex items-center px-6 md:px-16">
       <div className="grid md:grid-cols-2 gap-6 items-center w-full">
         {/* LEFT — Floating Cats */}
-        <div className="relative h-100 md:h-125">
+        <div className="relative h-100 md:h-125 z-10">
           {/* Large Cat */}
           <motion.img
             src="https://images.pexels.com/photos/279360/pexels-photo-279360.jpeg?auto=compress&cs=tinysrgb&w=800"
@@ -69,9 +70,9 @@ const Hero: FC<HeroProps> = () => {
           <div className="space-y-2">
             <h2 className="text-2xl font-semibold text-amber-900">Our Goal</h2>
             <p className="text-amber-800">
-              To reduce stray cat populations through rescue, and
-              rehabilitation while educating communities about compassion and
-              proper animal care.
+              To reduce stray cat populations through rescue, and rehabilitation
+              while educating communities about compassion and proper animal
+              care.
             </p>
           </div>
         </div>

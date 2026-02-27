@@ -3,6 +3,10 @@
 import CatList from "@/app/container/CatList";
 import { ICat } from "@/models/Cats";
 import { useCallback, useEffect, useRef, useState } from "react";
+import { PlusIcon } from "@heroicons/react/24/solid";
+import { useRouter } from "next/navigation";
+import Loading from "@/app/components/Loading";
+import FloatingAddButton from "@/app/components/FloatingAddButton";
 
 type Cat = {
   _id: string;
@@ -16,7 +20,6 @@ export default function CatFeed() {
   const [loading, setLoading] = useState(false);
   const [hasMore, setHasMore] = useState(true);
   const loadingRef = useRef(false);
-  console.log("Fetching with cursor:", cursor);
   const observerRef = useRef<HTMLDivElement | null>(null);
 
   const fetchCats = useCallback(async () => {
@@ -24,8 +27,6 @@ export default function CatFeed() {
 
     loadingRef.current = true;
     setLoading(true);
-
-    console.log("Fetching with cursor:", cursor);
 
     const res = await fetch(
       `/api/admin/cats/view?limit=6${cursor ? `&cursor=${cursor}` : ""}`,
@@ -53,23 +54,23 @@ export default function CatFeed() {
     fetchCats();
   }, []);
 
- useEffect(() => {
-  const observer = new IntersectionObserver(
-    (entries) => {
-      if (entries[0].isIntersecting) {
-        fetchCats();
-      }
-    },
-    { rootMargin: "100px" }
-  );
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting) {
+          fetchCats();
+        }
+      },
+      { rootMargin: "100px" },
+    );
 
-  const current = observerRef.current;
-  if (current) observer.observe(current);
+    const current = observerRef.current;
+    if (current) observer.observe(current);
 
-  return () => {
-    if (current) observer.unobserve(current);
-  };
-}, [fetchCats]);
+    return () => {
+      if (current) observer.unobserve(current);
+    };
+  }, [fetchCats]);
 
   return (
     <>
@@ -79,9 +80,11 @@ export default function CatFeed() {
           ref={observerRef}
           className="h-10 flex items-center justify-center"
         >
-          {loading && <p className="text-sm text-zinc-500">Loading...</p>}
+          {loading && <Loading />}
         </div>
       )}
+      {/* Floating Add Button */}
+      <FloatingAddButton />
     </>
   );
 }

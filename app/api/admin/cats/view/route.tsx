@@ -7,7 +7,6 @@ export async function GET(req: NextRequest) {
   await connectDB();
 
   const { searchParams } = new URL(req.url);
-  console.log(req.url);
 
   const limit = Math.min(Number(searchParams.get("limit")) || 6, 50);
   const cursor = searchParams.get("cursor");

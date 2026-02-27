@@ -1,5 +1,5 @@
 import { connectDB } from "@/lib/mongodb";
-import { Cat } from "@/models/Cats";
+import { Stories } from "@/models/Stories";
 import { NextRequest, NextResponse } from "next/server";
 import mongoose from "mongoose";
 
@@ -11,8 +11,11 @@ export async function GET(req: NextRequest) {
   const limit = Math.min(Number(searchParams.get("limit")) || 6, 50);
   const cursor = searchParams.get("cursor");
 
-  let query = {};
+  let query: any = {};
 
+  // ==============================
+  // Cursor Pagination Logic
+  // ==============================
   if (cursor) {
     const parsed = JSON.parse(Buffer.from(cursor, "base64").toString());
 
@@ -27,16 +30,17 @@ export async function GET(req: NextRequest) {
     };
   }
 
-  const cats = await Cat.find(query)
+  const stories = await Stories.find(query)
     .sort({ createdAt: -1, _id: -1 })
     .limit(limit + 1)
     .select("-__v")
+    .populate("cats", "name")
     .lean();
 
   let nextCursor = null;
 
-  if (cats.length > limit) {
-    const last = cats[limit - 1];
+  if (stories.length > limit) {
+    const last = stories[limit - 1];
 
     nextCursor = Buffer.from(
       JSON.stringify({
@@ -45,11 +49,11 @@ export async function GET(req: NextRequest) {
       }),
     ).toString("base64");
 
-    cats.splice(limit);
+    stories.splice(limit);
   }
 
   return NextResponse.json({
-    data: cats,
+    data: stories,
     nextCursor,
   });
 }

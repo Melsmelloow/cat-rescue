@@ -3,12 +3,14 @@
 import { PlusIcon } from "@heroicons/react/24/solid";
 import { useRouter } from "next/navigation";
 
-const FloatingAddButton = () => {
+
+
+const FloatingAddButton = ({path}: {path: string}) => {
   const router = useRouter();
 
   return (
     <button
-      onClick={() => router.push("/admin/cats/add")}
+      onClick={() => router.push(path)}
       className="
         fixed 
         bottom-6 

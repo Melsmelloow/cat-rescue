@@ -1,40 +1,37 @@
 "use client";
 
 import FloatingAddButton from "@/app/components/FloatingAddButton";
-import CatList from "@/app/container/CatList";
-import { ICat } from "@/models/Cats";
+import StoryCard from "@/app/container/StoryCard";
+import { TStory } from "@/types/story";
 import { useCallback, useEffect, useRef, useState } from "react";
 
-type Cat = {
-  _id: string;
-  name: string;
-  images: string[];
-};
-
-export default function CatFeed() {
-  const [cats, setCats] = useState<Cat[]>([]);
+export default function StoryFeed() {
+  const [stories, setStories] = useState<TStory[]>([]);
   const [cursor, setCursor] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
   const [hasMore, setHasMore] = useState(true);
+
   const loadingRef = useRef(false);
   const observerRef = useRef<HTMLDivElement | null>(null);
 
-  const fetchCats = useCallback(async () => {
+  const fetchStories = useCallback(async () => {
     if (loadingRef.current || !hasMore) return;
 
     loadingRef.current = true;
     setLoading(true);
 
     const res = await fetch(
-      `/api/admin/cats/view?limit=6${cursor ? `&cursor=${cursor}` : ""}`,
+      `/api/admin/stories/view?limit=6${cursor ? `&cursor=${cursor}` : ""}`,
     );
 
     const data = await res.json();
 
-    setCats((prev) => {
-      const existingIds = new Set(prev.map((cat) => cat._id));
-      const newCats = data.data.filter((cat: Cat) => !existingIds.has(cat._id));
-      return [...prev, ...newCats];
+    setStories((prev) => {
+      const existingIds = new Set(prev.map((s) => s._id));
+      const newStories = data.data.filter(
+        (s: TStory) => !existingIds.has(s._id),
+      );
+      return [...prev, ...newStories];
     });
 
     setCursor(data.nextCursor);
@@ -48,14 +45,14 @@ export default function CatFeed() {
   }, [cursor, hasMore]);
 
   useEffect(() => {
-    fetchCats();
+    fetchStories();
   }, []);
 
   useEffect(() => {
     const observer = new IntersectionObserver(
       (entries) => {
         if (entries[0].isIntersecting) {
-          fetchCats();
+          fetchStories();
         }
       },
       { rootMargin: "100px" },
@@ -67,21 +64,26 @@ export default function CatFeed() {
     return () => {
       if (current) observer.unobserve(current);
     };
-  }, [fetchCats]);
+  }, [fetchStories]);
 
   return (
     <>
-      <CatList cats={cats as unknown as ICat[]} />{" "}
+      <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 p-6">
+        {stories.map((story) => (
+          <StoryCard story={story} />
+        ))}
+      </div>
+
       {hasMore && (
         <div
           ref={observerRef}
           className="h-10 flex items-center justify-center"
         >
-          {loading && <p className="text-gray-500">Loading more cats...</p>}
+          {loading && <p className="text-gray-500">Loading more stories...</p>}
         </div>
       )}
-      {/* Floating Add Button */}
-      <FloatingAddButton path="/admin/cats/add" />
+
+      <FloatingAddButton path="/admin/stories/add" />
     </>
   );
 }

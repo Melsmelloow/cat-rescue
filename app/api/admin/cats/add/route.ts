@@ -1,13 +1,8 @@
-import { NextRequest, NextResponse } from "next/server";
+import { ALLOWED_TYPES, MAX_IMAGE_SIZE, MAX_IMAGES } from "@/app/constant/images";
 import cloudinary from "@/lib/cloudinary";
 import { connectDB } from "@/lib/mongodb";
 import { Cat } from "@/models/Cats";
-import { authOptions } from "@/lib/auth";
-import { getServerSession } from "next-auth";
-
-const MAX_IMAGE_SIZE = 5 * 1024 * 1024; // 5MB
-const MAX_IMAGES = 5;
-const ALLOWED_TYPES = ["image/jpeg", "image/png", "image/webp"];
+import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(req: NextRequest) {
   try {

@@ -80,7 +80,7 @@ export default function CatFeed() {
           ref={observerRef}
           className="h-10 flex items-center justify-center"
         >
-          {loading && <Loading />}
+          {loading && <p className="text-gray-500">Loading more cats...</p>}
         </div>
       )}
       {/* Floating Add Button */}

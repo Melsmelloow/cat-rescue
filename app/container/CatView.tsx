@@ -1,21 +1,32 @@
 "use client";
+
 import { ICat } from "@/models/Cats";
 import { FC, useEffect, useState } from "react";
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+} from "@/components/ui/carousel";
 import { HeartIcon as HeartOutline } from "@heroicons/react/24/outline";
 import { HeartIcon as HeartSolid } from "@heroicons/react/24/solid";
+
 interface CatViewProps extends ICat {
   _id: string;
 }
-const CatCard: FC<CatViewProps> = ({
+const CatView: FC<CatViewProps> = ({
   _id,
   name,
   breed,
   story,
-  images,
+  images = [],
   likes,
   medicalStatus,
   personality,
 }) => {
+  const hasImages = images.length > 0;
+
   const [liked, setLiked] = useState(false);
   const [likeCount, setLikeCount] = useState(likes);
   const [loading, setLoading] = useState(false);
@@ -71,8 +82,8 @@ const CatCard: FC<CatViewProps> = ({
 
       if (res.status === 409) {
         // Already liked
-        setLiked(false);
-        setLikeCount((prev: number) => prev - 1);
+        setLiked(true);
+        setLikeCount((prev) => prev - 1);
       }
 
       if (!res.ok && res.status !== 409) {
@@ -81,22 +92,37 @@ const CatCard: FC<CatViewProps> = ({
     } catch (err) {
       // rollback optimistic update
       setLiked(false);
-      setLikeCount((prev: number) => prev - 1);
+      setLikeCount((prev) => prev - 1);
     } finally {
       setLoading(false);
     }
   };
+
   return (
     <div className="bg-white rounded-2xl shadow-md overflow-hidden hover:shadow-xl transition duration-300">
-      {/* Image */}
+      {/* Carousel */}
+      <Carousel opts={{ loop: true }} className="w-full">
+        <CarouselContent>
+          {(hasImages ? images : ["/placeholder-cat.jpg"]).map((img, index) => (
+            <CarouselItem key={index}>
+              <div className="relative w-full aspect-square bg-zinc-100">
+                <img
+                  src={img}
+                  alt={name}
+                  className="h-full w-full object-cover"
+                />
+              </div>
+            </CarouselItem>
+          ))}
+        </CarouselContent>
 
-      <div className="relative w-full aspect-square bg-zinc-100">
-        <img
-          src={images?.[0] || "/placeholder-cat.jpg"}
-          alt={name}
-          className="h-full w-full object-cover"
-        />
-      </div>
+        {images.length > 1 && (
+          <>
+            <CarouselPrevious className="left-3" />
+            <CarouselNext className="right-3" />
+          </>
+        )}
+      </Carousel>
 
       {/* Content */}
       <div className="p-5 space-y-3">
@@ -121,10 +147,7 @@ const CatCard: FC<CatViewProps> = ({
         <div className="flex items-center justify-between pt-3 border-t">
           <span className="text-sm text-zinc-600">🏥 {medicalStatus}</span>
           <button
-            onClick={(e)=>{
-              e.stopPropagation();
-              handleLike();
-            }}
+            onClick={handleLike}
             disabled={loading}
             className="flex items-center gap-1 text-sm font-medium transition"
           >
@@ -144,4 +167,4 @@ const CatCard: FC<CatViewProps> = ({
   );
 };
 
-export default CatCard;
+export default CatView;

@@ -3,13 +3,15 @@ import { ICat } from "@/models/Cats";
 import { motion } from "framer-motion";
 import { FC } from "react";
 import CatCard from "./CatCard";
+import { useRouter } from "next/navigation";
 
 interface CatListProps {
   cats: ICat[];
 }
 
 const CatList: FC<CatListProps> = ({ cats }) => {
-  
+  const router = useRouter();
+
   return (
     <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 p-6">
       {cats.map((cat: any, index: number) => (
@@ -22,6 +24,7 @@ const CatList: FC<CatListProps> = ({ cats }) => {
             delay: index * 0.1,
           }}
           viewport={{ once: true }}
+          onClick={() => router.push(`/admin/cats/view/${cat._id}`)}
         >
           <CatCard {...cat} />
         </motion.div>

@@ -2,16 +2,17 @@
 import { Bars3BottomRightIcon } from "@heroicons/react/24/outline";
 import React, { FC } from "react";
 import { motion, AnimatePresence } from "motion/react";
-import { MENU_ITEMS } from "../constant/menu-item";
+import { ADMIN_MENU_ITEMS, MENU_ITEMS } from "../constant/menu-item";
 import { Separator } from "@/components/ui/separator";
 import { useSession } from "next-auth/react";
 import { Button } from "@/components/ui/button";
 import { signOut } from "next-auth/react";
 
-const Menu = () => {
+const Menu: React.FC<{ isAdmin: boolean }> = ({ isAdmin }) => {
+  const menuItems = isAdmin ? ADMIN_MENU_ITEMS : MENU_ITEMS;
   return (
     <>
-      {MENU_ITEMS.map((item, idx) => (
+      {menuItems.map((item, idx) => (
         <div key={item.href} className="w-[90%] mx-auto">
           <a
             href={item.href}
@@ -19,7 +20,7 @@ const Menu = () => {
           >
             {item.label}
           </a>
-          {idx < MENU_ITEMS.length - 1 && <Separator className="mx-auto w-2" />}
+          {idx < menuItems.length - 1 && <Separator className="mx-auto w-2" />}
         </div>
       ))}
     </>
@@ -29,8 +30,6 @@ const Menu = () => {
 const Navbar: FC = () => {
   const { data: session, status } = useSession();
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
-
-  console.log(session, status);
 
   return (
     <div className="sticky top-0 z-50 bg-amber-50 text-amber-950 shadow-md backdrop-blur-sm">
@@ -62,10 +61,13 @@ const Navbar: FC = () => {
                     <div className="px-4 py-2 text-md text-gray-700">
                       Welcome, {session?.user?.username}
                     </div>
-                    <Button variant="outline"    onClick={() => signOut()}>Logout</Button>
+                    <Button variant="outline" onClick={() => signOut()}>
+                      Logout
+                    </Button>
                   </div>
                 )}
-                <Menu />
+
+                <Menu isAdmin={status === "authenticated" ? true : false} />
               </div>
             </motion.div>
           )}

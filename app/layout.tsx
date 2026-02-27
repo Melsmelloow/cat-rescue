@@ -4,6 +4,7 @@ import Navbar from "./components/Navbar";
 import "./globals.css";
 import { headers } from "next/headers";
 import Image from "next/image";
+import Providers from "./provider";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -46,7 +47,14 @@ export default async function RootLayout({
               </p>
             </div>
           </div>
-        ) : <><Navbar/>{children}</>} 
+        ) : (
+           <Providers>
+          <div className={`${inter.className} font-sans`}>
+            <Navbar />
+           {children}
+          </div>
+          </Providers>
+        )}
       </body>
     </html>
   );

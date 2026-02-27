@@ -4,6 +4,9 @@ import React, { FC } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import { MENU_ITEMS } from "../constant/menu-item";
 import { Separator } from "@/components/ui/separator";
+import { useSession } from "next-auth/react";
+import { Button } from "@/components/ui/button";
+import { signOut } from "next-auth/react";
 
 const Menu = () => {
   return (
@@ -24,7 +27,10 @@ const Menu = () => {
 };
 
 const Navbar: FC = () => {
+  const { data: session, status } = useSession();
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
+
+  console.log(session, status);
 
   return (
     <div className="sticky top-0 z-50 bg-amber-50 text-amber-950 shadow-md backdrop-blur-sm">
@@ -51,6 +57,14 @@ const Navbar: FC = () => {
               className="absolute right-0 top-full w-52 bg-amber-50 shadow-xl rounded-b-xl overflow-hidden"
             >
               <div className="py-2">
+                {status === "authenticated" && (
+                  <div className="flex p-2">
+                    <div className="px-4 py-2 text-md text-gray-700">
+                      Welcome, {session?.user?.username}
+                    </div>
+                    <Button variant="outline"    onClick={() => signOut()}>Logout</Button>
+                  </div>
+                )}
                 <Menu />
               </div>
             </motion.div>

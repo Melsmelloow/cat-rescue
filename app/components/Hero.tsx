@@ -69,9 +69,9 @@ const Hero: FC<HeroProps> = () => {
           <div className="space-y-2">
             <h2 className="text-2xl font-semibold text-amber-900">Our Goal</h2>
             <p className="text-amber-800">
-              To reduce stray cat populations through rescue, and rehabilitation,
-               while educating communities about
-              compassion and proper animal care.
+              To reduce stray cat populations through rescue, and rehabilitation
+              while educating communities about compassion and proper animal
+              care.
             </p>
           </div>
         </div>

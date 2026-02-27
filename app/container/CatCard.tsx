@@ -3,6 +3,7 @@ import { ICat } from "@/models/Cats";
 import { FC, useEffect, useState } from "react";
 import { HeartIcon as HeartOutline } from "@heroicons/react/24/outline";
 import { HeartIcon as HeartSolid } from "@heroicons/react/24/solid";
+import { motion, AnimatePresence } from "framer-motion";
 interface CatViewProps extends ICat {
   _id: string;
 }
@@ -19,6 +20,7 @@ const CatCard: FC<CatViewProps> = ({
   const [liked, setLiked] = useState(false);
   const [likeCount, setLikeCount] = useState(likes);
   const [loading, setLoading] = useState(false);
+  const [animateHeart, setAnimateHeart] = useState(false);
 
   // 🔐 Get or create deviceId
   const getDeviceId = () => {
@@ -87,7 +89,28 @@ const CatCard: FC<CatViewProps> = ({
     }
   };
   return (
-    <div className="bg-white rounded-2xl shadow-md overflow-hidden hover:shadow-xl transition duration-300">
+    <div className="relative bg-white rounded-2xl shadow-md overflow-hidden hover:shadow-xl transition duration-300">
+      <AnimatePresence>
+        {animateHeart && (
+          <motion.div
+            initial={{ opacity: 0, scale: 0.5, y: 0, rotate: -15 }}
+            animate={{
+              opacity: [0, 1, 1, 0],
+              scale: [0.5, 1.8, 1.6],
+              y: [0, -60, -120],
+              rotate: [-15, 10, -5],
+            }}
+            exit={{ opacity: 0 }}
+            transition={{
+              duration: 0.9,
+              ease: "easeOut",
+            }}
+            className="absolute inset-0 flex items-center justify-center pointer-events-none z-10"
+          >
+            <HeartSolid className="w-24 h-24 drop-shadow-xl bg-gradient-to-br from-rose-500 via-fuchsia-500 to-purple-600 bg-clip-text text-transparent" />
+          </motion.div>
+        )}
+      </AnimatePresence>
       {/* Image */}
 
       <div className="relative w-full aspect-square bg-zinc-100">
@@ -121,18 +144,27 @@ const CatCard: FC<CatViewProps> = ({
         <div className="flex items-center justify-between pt-3 border-t">
           <span className="text-sm text-zinc-600">🏥 {medicalStatus}</span>
           <button
-            onClick={(e)=>{
+            onClick={(e) => {
               e.stopPropagation();
               handleLike();
+              if (!liked) {
+                setAnimateHeart(true);
+                setTimeout(() => setAnimateHeart(false), 900);
+              }
             }}
             disabled={loading}
-            className="flex items-center gap-1 text-sm font-medium transition"
+            className="relative flex items-center gap-1 text-sm font-medium"
           >
-            {liked ? (
-              <HeartSolid className="w-5 h-5 text-rose-500" />
-            ) : (
-              <HeartOutline className="w-5 h-5 text-zinc-400 hover:text-rose-500 transition" />
-            )}
+            <motion.div
+              animate={liked ? { scale: [1, 1.4, 1] } : { scale: 1 }}
+              transition={{ duration: 0.4 }}
+            >
+              {liked ? (
+                <HeartSolid className="w-5 h-5 text-rose-500" />
+              ) : (
+                <HeartOutline className="w-5 h-5 text-zinc-400 hover:text-rose-500 transition" />
+              )}
+            </motion.div>
 
             <span className={`${liked ? "text-rose-500" : "text-amber-700"}`}>
               {likeCount}

@@ -112,14 +112,32 @@ const CatView: FC<CatViewProps> = ({
               y: [0, -60, -120],
               rotate: [-15, 10, -5],
             }}
-            exit={{ opacity: 0 }}
-            transition={{
-              duration: 0.9,
-              ease: "easeOut",
-            }}
+            transition={{ duration: 1, ease: "easeOut" }}
             className="absolute inset-0 flex items-center justify-center pointer-events-none z-10"
           >
-            <HeartSolid className="w-24 h-24 drop-shadow-xl bg-gradient-to-br from-rose-500 via-fuchsia-500 to-purple-600 bg-clip-text text-transparent" />
+            <svg
+              viewBox="0 0 24 24"
+              className="w-24 h-24 drop-shadow-[0_0_25px_rgba(236,72,153,0.6)]"
+            >
+              <defs>
+                <linearGradient
+                  id="heartGradient"
+                  x1="0%"
+                  y1="0%"
+                  x2="100%"
+                  y2="100%"
+                >
+                  <stop offset="0%" stopColor="#f43f5e" />
+                  <stop offset="50%" stopColor="#d946ef" />
+                  <stop offset="100%" stopColor="#7c3aed" />
+                </linearGradient>
+              </defs>
+
+              <path
+                fill="url(#heartGradient)"
+                d="M11.644 20.91l-.007-.003-.022-.012a15.247 15.247 0 01-2.02-1.25 14.687 14.687 0 01-2.793-2.377C4.01 14.68 2 11.805 2 8.5 2 5.462 4.462 3 7.5 3c1.74 0 3.38.81 4.5 2.09A6.002 6.002 0 0116.5 3C19.538 3 22 5.462 22 8.5c0 3.305-2.01 6.18-4.802 8.768a14.687 14.687 0 01-2.793 2.377 15.247 15.247 0 01-2.02 1.25l-.022.012-.007.003a.75.75 0 01-.712 0z"
+              />
+            </svg>
           </motion.div>
         )}
       </AnimatePresence>

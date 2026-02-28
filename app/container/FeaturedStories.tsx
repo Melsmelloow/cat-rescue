@@ -11,8 +11,16 @@ import {
 import { TStory } from "@/types/story";
 import { useEffect, useState } from "react";
 import StoryCard from "./StoryCard";
+import Autoplay from "embla-carousel-autoplay";
+import { useRef } from "react";
 
 const FeaturedStories = () => {
+  const autoplay = useRef(
+    Autoplay({
+      delay: 4000, // 4 seconds
+      stopOnInteraction: false, // keeps autoplay after swipe
+    }),
+  );
   const [stories, setStories] = useState<TStory[]>([]);
 
   const fetchFeaturedStories = async () => {
@@ -34,34 +42,34 @@ const FeaturedStories = () => {
   console.log(stories);
 
   return (
-    <section className="bg-[#F3EFE6] py-15 p-6 grid place-items-center rounded-xl mt-6">
-      <h1 className="text-4xl md:text-5xl font-bold text-amber-900 mb-10">
+    <section className="bg-[#F3EFE6] py-16 mt-6 w-full">
+      <h1 className="text-4xl md:text-5xl font-bold text-amber-900 mb-12 text-center w-full">
         Featured Stories 🐾
       </h1>
 
       <Carousel
-        opts={{
-          align: "start",
-        }}
-        className="w-full text-center"
-      >
-        <CarouselContent className="m-0">
-          {stories.map((story) => {
-            return (
-              <CarouselItem key={story._id} className="pr-4">
+  opts={{ align: "start", loop: true }}
+  plugins={[autoplay.current]}
+  className="max-w-70 mx-auto"
+>
+        {/* THIS is the key wrapper */}
+        <div className="max-w-lg mx-auto">
+          <CarouselContent>
+            {stories.map((story) => (
+              <CarouselItem key={story._id}>
                 <StoryCard story={story} />
               </CarouselItem>
-            );
-          })}
-        </CarouselContent>
+            ))}
+          </CarouselContent>
 
-        {/* Navigation Arrows (desktop friendly) */}
-        <CarouselPrevious className="hidden sm:flex" />
-        <CarouselNext className="hidden sm:flex" />
+          <CarouselPrevious className="hidden sm:flex" />
+          <CarouselNext className="hidden sm:flex" />
+        </div>
       </Carousel>
-      <Button variant="outline" className="mt-10">
-        View more stories
-      </Button>
+
+      <div className="text-center mt-10">
+        <Button variant="outline">View more stories</Button>
+      </div>
     </section>
   );
 };

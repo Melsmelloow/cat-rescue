@@ -16,7 +16,7 @@ via-zinc-50
 to-amber-50
 font-sans"
     >
-      <main className="flex min-h-screen w-full max-w-3xl flex-col items-center justify-between py-10 px-1sm:items-start p-6">
+    <main className="flex min-h-screen w-full flex-col py-10">
         <Hero />
         <FeaturedStories />
         <Separator className="mt-10" />

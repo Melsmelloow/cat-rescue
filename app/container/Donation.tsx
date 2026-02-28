@@ -4,7 +4,7 @@ import Image from "next/image";
 
 function Donation() {
   return (
-    <section className="mt-16">
+    <section className="mt-16 p-6">
       <div className="rounded-2xl bg-amber-50 border border-amber-200 shadow-md p-8 max-w-3xl mx-auto text-center">
         {/* Title */}
         <div className="flex items-center gap-2 mb-4">

@@ -23,7 +23,7 @@ font-sans"
         <About />
         <Donation />
         <Separator className="mt-10" />
-        <Contact/>
+        <Contact />
       </main>
     </div>
   );

@@ -16,7 +16,7 @@ export default function LoginPage() {
   // 🔁 Redirect if already logged in
   useEffect(() => {
     if (status === "authenticated") {
-      router.replace("/admin/cats");
+      router.replace("/admin/cats/view");
     }
   }, [status, router]);
 
@@ -36,7 +36,7 @@ export default function LoginPage() {
     if (result?.error) {
       setError("Invalid username or password");
     } else {
-      router.push("/admin/cats");
+      router.push("/admin/cats/view");
     }
   };
 

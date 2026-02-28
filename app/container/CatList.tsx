@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import { FC } from "react";
 import CatCard from "./CatCard";
 import { useRouter } from "next/navigation";
+import { useSession } from "next-auth/react";
 
 interface CatListProps {
   cats: ICat[];
@@ -11,6 +12,7 @@ interface CatListProps {
 
 const CatList: FC<CatListProps> = ({ cats }) => {
   const router = useRouter();
+  const { data: session } = useSession();
 
   return (
     <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 p-6">
@@ -24,7 +26,12 @@ const CatList: FC<CatListProps> = ({ cats }) => {
             delay: index * 0.1,
           }}
           viewport={{ once: true }}
-          onClick={() => router.push(`/admin/cats/view/${cat._id}`)}
+          onClick={() => {
+            const redirectURL = session
+              ? `/admin/cats/view/${cat._id}`
+              : `/cats/view/${cat._id}`;
+            router.push(redirectURL);
+          }}
         >
           <CatCard {...cat} />
         </motion.div>

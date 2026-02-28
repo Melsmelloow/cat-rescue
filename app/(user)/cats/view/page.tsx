@@ -5,6 +5,7 @@ import CatList from "@/app/container/CatList";
 import { ICat } from "@/models/Cats";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useSession } from "next-auth/react";
+
 type Cat = {
   _id: string;
   name: string;
@@ -12,6 +13,7 @@ type Cat = {
 };
 
 export default function CatFeed() {
+  const { data: session, status } = useSession();
   const [cats, setCats] = useState<Cat[]>([]);
   const [cursor, setCursor] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
@@ -81,7 +83,7 @@ export default function CatFeed() {
         </div>
       )}
       {/* Floating Add Button */}
-      <FloatingAddButton path="/admin/cats/add" />
+      {session && <FloatingAddButton path="/admin/cats/add" />}
     </>
   );
 }

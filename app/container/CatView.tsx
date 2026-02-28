@@ -12,10 +12,15 @@ import {
 import { HeartIcon as HeartOutline } from "@heroicons/react/24/outline";
 import { HeartIcon as HeartSolid } from "@heroicons/react/24/solid";
 import { motion, AnimatePresence } from "framer-motion";
+import { IStory } from "@/models/Stories";
+import { Separator } from "@/components/ui/separator";
+import CatFeaturedStory from "./CatFeaturedStory";
 
-interface CatViewProps extends ICat {
+interface CatViewProps extends Omit<ICat, "_id"> {
   _id: string;
+  stories: IStory[];
 }
+
 const CatView: FC<CatViewProps> = ({
   _id,
   name,
@@ -25,6 +30,7 @@ const CatView: FC<CatViewProps> = ({
   likes,
   medicalStatus,
   personality,
+  stories,
 }) => {
   const hasImages = images.length > 0;
 
@@ -100,122 +106,145 @@ const CatView: FC<CatViewProps> = ({
     }
   };
 
+  console.log(stories);
   return (
-    <div className="relative bg-white rounded-2xl shadow-md overflow-hidden hover:shadow-xl transition duration-300">
-      <AnimatePresence>
-        {animateHeart && (
-          <motion.div
-            initial={{ opacity: 0, scale: 0.5, y: 0, rotate: -15 }}
-            animate={{
-              opacity: [0, 1, 1, 0],
-              scale: [0.5, 1.8, 1.6],
-              y: [0, -60, -120],
-              rotate: [-15, 10, -5],
-            }}
-            transition={{ duration: 1, ease: "easeOut" }}
-            className="absolute inset-0 flex items-center justify-center pointer-events-none z-10"
-          >
-            <svg
-              viewBox="0 0 24 24"
-              className="w-24 h-24 drop-shadow-[0_0_25px_rgba(236,72,153,0.6)]"
-            >
-              <defs>
-                <linearGradient
-                  id="heartGradient"
-                  x1="0%"
-                  y1="0%"
-                  x2="100%"
-                  y2="100%"
-                >
-                  <stop offset="0%" stopColor="#f43f5e" />
-                  <stop offset="50%" stopColor="#d946ef" />
-                  <stop offset="100%" stopColor="#7c3aed" />
-                </linearGradient>
-              </defs>
-
-              <path
-                fill="url(#heartGradient)"
-                d="M11.644 20.91l-.007-.003-.022-.012a15.247 15.247 0 01-2.02-1.25 14.687 14.687 0 01-2.793-2.377C4.01 14.68 2 11.805 2 8.5 2 5.462 4.462 3 7.5 3c1.74 0 3.38.81 4.5 2.09A6.002 6.002 0 0116.5 3C19.538 3 22 5.462 22 8.5c0 3.305-2.01 6.18-4.802 8.768a14.687 14.687 0 01-2.793 2.377 15.247 15.247 0 01-2.02 1.25l-.022.012-.007.003a.75.75 0 01-.712 0z"
-              />
-            </svg>
-          </motion.div>
-        )}
-      </AnimatePresence>
-      {/* Carousel */}
-      <Carousel opts={{ loop: true }} className="w-full">
-        <CarouselContent>
-          {(hasImages ? images : ["/placeholder-cat.jpg"]).map((img, index) => (
-            <CarouselItem key={index}>
-              <div className="relative w-full aspect-square bg-zinc-100">
-                <img
-                  src={img}
-                  alt={name}
-                  className="h-full w-full object-cover"
-                />
-              </div>
-            </CarouselItem>
-          ))}
-        </CarouselContent>
-
-        {images.length > 1 && (
-          <>
-            <CarouselPrevious className="left-3" />
-            <CarouselNext className="right-3" />
-          </>
-        )}
-      </Carousel>
-
-      {/* Content */}
-      <div className="p-5 space-y-3">
-        <div>
-          <h2 className="text-xl font-bold text-amber-800">{name}</h2>
-          <p className="text-sm text-zinc-500">{breed}</p>
-        </div>
-
-        <p className="text-sm text-zinc-700 line-clamp-3">{story}</p>
-
-        <div className="flex flex-wrap gap-2">
-          {personality?.map((trait, index) => (
-            <span
-              key={index}
-              className="text-xs bg-amber-100 text-amber-800 px-2 py-1 rounded-full"
-            >
-              {trait}
-            </span>
-          ))}
-        </div>
-
-        <div className="flex items-center justify-between pt-3 border-t">
-          <span className="text-sm text-zinc-600">🏥 {medicalStatus}</span>
-          <button
-            onClick={() => {
-              handleLike();
-              if (!liked) {
-                setAnimateHeart(true);
-                setTimeout(() => setAnimateHeart(false), 900);
-              }
-            }}
-            disabled={loading}
-            className="relative flex items-center gap-1 text-sm font-medium"
-          >
+    <>
+      <div className="relative bg-white rounded-2xl shadow-md overflow-hidden hover:shadow-xl transition duration-300">
+        <AnimatePresence>
+          {animateHeart && (
             <motion.div
-              animate={liked ? { scale: [1, 1.4, 1] } : { scale: 1 }}
-              transition={{ duration: 0.4 }}
+              initial={{ opacity: 0, scale: 0.5, y: 0, rotate: -15 }}
+              animate={{
+                opacity: [0, 1, 1, 0],
+                scale: [0.5, 1.8, 1.6],
+                y: [0, -60, -120],
+                rotate: [-15, 10, -5],
+              }}
+              transition={{ duration: 1, ease: "easeOut" }}
+              className="absolute inset-0 flex items-center justify-center pointer-events-none z-10"
             >
-              {liked ? (
-                <HeartSolid className="w-5 h-5 text-rose-500" />
-              ) : (
-                <HeartOutline className="w-5 h-5 text-zinc-400 hover:text-rose-500 transition" />
-              )}
-            </motion.div>
+              <svg
+                viewBox="0 0 24 24"
+                className="w-24 h-24 drop-shadow-[0_0_25px_rgba(236,72,153,0.6)]"
+              >
+                <defs>
+                  <linearGradient
+                    id="heartGradient"
+                    x1="0%"
+                    y1="0%"
+                    x2="100%"
+                    y2="100%"
+                  >
+                    <stop offset="0%" stopColor="#f43f5e" />
+                    <stop offset="50%" stopColor="#d946ef" />
+                    <stop offset="100%" stopColor="#7c3aed" />
+                  </linearGradient>
+                </defs>
 
-            <span className={`${liked ? "text-rose-500" : "text-amber-700"}`}>
-              {likeCount}
-            </span>
-          </button>
+                <path
+                  fill="url(#heartGradient)"
+                  d="M11.644 20.91l-.007-.003-.022-.012a15.247 15.247 0 01-2.02-1.25 14.687 14.687 0 01-2.793-2.377C4.01 14.68 2 11.805 2 8.5 2 5.462 4.462 3 7.5 3c1.74 0 3.38.81 4.5 2.09A6.002 6.002 0 0116.5 3C19.538 3 22 5.462 22 8.5c0 3.305-2.01 6.18-4.802 8.768a14.687 14.687 0 01-2.793 2.377 15.247 15.247 0 01-2.02 1.25l-.022.012-.007.003a.75.75 0 01-.712 0z"
+                />
+              </svg>
+            </motion.div>
+          )}
+        </AnimatePresence>
+        {/* Carousel */}
+        <Carousel opts={{ loop: true }} className="w-full">
+          <CarouselContent>
+            {(hasImages ? images : ["/placeholder-cat.jpg"]).map(
+              (img, index) => (
+                <CarouselItem key={index}>
+                  <div className="relative w-full aspect-square bg-zinc-100">
+                    <img
+                      src={img}
+                      alt={name}
+                      className="h-full w-full object-cover"
+                    />
+                  </div>
+                </CarouselItem>
+              ),
+            )}
+          </CarouselContent>
+
+          {images.length > 1 && (
+            <>
+              <CarouselPrevious className="left-3" />
+              <CarouselNext className="right-3" />
+            </>
+          )}
+        </Carousel>
+
+        {/* Content */}
+        <div className="p-5 space-y-3">
+          <div>
+            <h2 className="text-xl font-bold text-amber-800">{name}</h2>
+            <p className="text-sm text-zinc-500">{breed}</p>
+          </div>
+
+          <p className="text-sm text-zinc-700 line-clamp-3">{story}</p>
+
+          <div className="flex flex-wrap gap-2">
+            {personality?.map((trait, index) => (
+              <span
+                key={index}
+                className="text-xs bg-amber-100 text-amber-800 px-2 py-1 rounded-full"
+              >
+                {trait}
+              </span>
+            ))}
+          </div>
+
+          <div className="flex items-center justify-between pt-3 border-t">
+            <span className="text-sm text-zinc-600">🏥 {medicalStatus}</span>
+            <button
+              onClick={() => {
+                handleLike();
+                if (!liked) {
+                  setAnimateHeart(true);
+                  setTimeout(() => setAnimateHeart(false), 900);
+                }
+              }}
+              disabled={loading}
+              className="relative flex items-center gap-1 text-sm font-medium"
+            >
+              <motion.div
+                animate={liked ? { scale: [1, 1.4, 1] } : { scale: 1 }}
+                transition={{ duration: 0.4 }}
+              >
+                {liked ? (
+                  <HeartSolid className="w-5 h-5 text-rose-500" />
+                ) : (
+                  <HeartOutline className="w-5 h-5 text-zinc-400 hover:text-rose-500 transition" />
+                )}
+              </motion.div>
+
+              <span className={`${liked ? "text-rose-500" : "text-amber-700"}`}>
+                {likeCount}
+              </span>
+            </button>
+          </div>
         </div>
       </div>
-    </div>
+      {stories.length > 0 && (
+        <>
+          <Separator className="my-10" />
+          <div className="p-5 py-0">
+            <h3 className="text-lg font-semibold text-amber-800 mb-3">
+              Related Stories of {name}
+            </h3>
+            <div className="space-y-2">
+              {stories.map((story) => (
+                <CatFeaturedStory
+                  key={story._id?.toString() || story.caption}
+                  story={story}
+                />
+              ))}
+            </div>
+          </div>
+        </>
+      )}
+    </>
   );
 };
 

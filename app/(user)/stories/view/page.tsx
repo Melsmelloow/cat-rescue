@@ -3,9 +3,11 @@
 import FloatingAddButton from "@/app/container/FloatingAddButton";
 import StoryCard from "@/app/container/StoryCard";
 import { TStory } from "@/types/story";
+import { useSession } from "next-auth/react";
 import { useCallback, useEffect, useRef, useState } from "react";
 
 export default function StoryFeed() {
+  const { data: session, status } = useSession();
   const [stories, setStories] = useState<TStory[]>([]);
   const [cursor, setCursor] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
@@ -83,7 +85,7 @@ export default function StoryFeed() {
         </div>
       )}
 
-      <FloatingAddButton path="/admin/stories/add" />
+      {session && <FloatingAddButton path="/admin/stories/add" />}
     </>
   );
 }

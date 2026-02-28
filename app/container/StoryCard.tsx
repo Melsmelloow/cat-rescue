@@ -3,6 +3,8 @@ import { TStory } from "@/types/story";
 import { HeartIcon as HeartOutline } from "@heroicons/react/24/outline";
 import { HeartIcon as HeartSolid } from "@heroicons/react/24/solid";
 import { motion } from "framer-motion";
+import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
 import { FC, useEffect, useState } from "react";
 
 interface StoryCardProps {
@@ -10,6 +12,8 @@ interface StoryCardProps {
 }
 
 const StoryCard: FC<StoryCardProps> = ({ story }) => {
+  const { data: session, status } = useSession();
+  const router = useRouter();
   const [liked, setLiked] = useState(false);
   const [likeCount, setLikeCount] = useState(story.likes || 0);
   const [loading, setLoading] = useState(false);
@@ -88,6 +92,12 @@ const StoryCard: FC<StoryCardProps> = ({ story }) => {
     <div
       key={story._id as unknown as string}
       className="bg-white rounded-xl shadow border overflow-hidden"
+      onClick={() => {
+        const redirectUrl = session
+          ? `/admin/stories/view/${story._id}`
+          : `/stories/view/${story._id}`;
+        router.push(redirectUrl);
+      }}
     >
       <img
         src={story.coverImage}

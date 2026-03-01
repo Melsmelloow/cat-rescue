@@ -17,10 +17,10 @@ function MobileBottomNav() {
     <nav className="fixed bottom-0 left-0 right-0 bg-white border-t shadow-sm md:hidden z-50">
       <div className="flex justify-around py-3">
         {navItems.map((item) => {
-        const isActive =
-  item.href === "/"
-    ? pathname === "/"
-    : pathname.startsWith(item.href);
+          const isActive =
+            item.href === "/"
+              ? pathname === "/"
+              : pathname.startsWith(item.href);
 
           return (
             <Link

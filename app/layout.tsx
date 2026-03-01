@@ -52,7 +52,7 @@ export default async function RootLayout({
           <Providers>
             <div className={`${inter.className} font-sans`}>
               <Navbar />
-              {children}
+              <div className="mb-15">{children}</div>
               <MobileBottomNav />
             </div>
           </Providers>

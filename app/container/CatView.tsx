@@ -15,7 +15,7 @@ import { HeartIcon as HeartOutline } from "@heroicons/react/24/outline";
 import { HeartIcon as HeartSolid } from "@heroicons/react/24/solid";
 import { AnimatePresence, motion } from "framer-motion";
 import { useSession } from "next-auth/react";
-import { useRouter } from "next/navigation";
+import Link from "next/link";
 import { FC, useEffect, useState } from "react";
 import CatFeaturedStory from "./CatFeaturedStory";
 
@@ -41,7 +41,6 @@ const CatView: FC<CatViewProps> = ({
   const [likeCount, setLikeCount] = useState(likes);
   const [loading, setLoading] = useState(false);
   const [animateHeart, setAnimateHeart] = useState(false);
-  const router = useRouter();
 
   // 🔐 Get or create deviceId
   const getDeviceId = () => {
@@ -263,15 +262,14 @@ const CatView: FC<CatViewProps> = ({
               No Stories Yet
             </h2>
             <div className="text-center mt-2">
-              <Button
-                variant="ghost"
-                className="p-0 h-auto text-amber-700 underline hover:no-underline hover:bg-transparent"
-                onClick={() => {
-                  router.push(`/admin/stories/add?catId=${_id}`);
-                }}
-              >
-                Add the first story of {name} 🐾
-              </Button>
+              <Link href={`/admin/stories/add?catId=${_id}`}>
+                <Button
+                  variant="ghost"
+                  className="p-0 h-auto text-amber-700 underline hover:no-underline hover:bg-transparent"
+                >
+                  Add the first story of {name} 🐾
+                </Button>
+              </Link>
             </div>
           </div>
         </>

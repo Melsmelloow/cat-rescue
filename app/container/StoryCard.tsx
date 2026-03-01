@@ -3,7 +3,7 @@ import { TStory } from "@/types/story";
 import { HeartIcon as HeartOutline } from "@heroicons/react/24/outline";
 import { HeartIcon as HeartSolid } from "@heroicons/react/24/solid";
 import { AnimatePresence, motion } from "framer-motion";
-import { useRouter } from "next/navigation";
+import Link from "next/link";
 import { FC, useEffect, useState } from "react";
 
 interface StoryCardProps {
@@ -11,7 +11,6 @@ interface StoryCardProps {
 }
 
 const StoryCard: FC<StoryCardProps> = ({ story }) => {
-  const router = useRouter();
   const [liked, setLiked] = useState(false);
   const [likeCount, setLikeCount] = useState(story.likes || 0);
   const [loading, setLoading] = useState(false);
@@ -87,12 +86,9 @@ const StoryCard: FC<StoryCardProps> = ({ story }) => {
   };
 
   return (
-    <div
-      key={story._id as unknown as string}
-      className="bg-white rounded-xl shadow border overflow-hidden"
-      onClick={() => {
-        router.push(`/stories/view/${story._id}`);
-      }}
+    <Link
+      href={`/stories/view/${story._id}`}
+      className="block bg-white rounded-xl shadow border overflow-hidden hover:shadow-lg transition"
     >
       <div className="relative">
         <img
@@ -194,7 +190,7 @@ const StoryCard: FC<StoryCardProps> = ({ story }) => {
           </button>
         </div>
       </div>
-    </div>
+    </Link>
   );
 };
 

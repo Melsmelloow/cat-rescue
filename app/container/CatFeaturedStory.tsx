@@ -1,18 +1,19 @@
 "use client";
 import { IStory } from "@/models/Stories";
-import { useRouter } from "next/navigation";
-import React, { FC } from "react";
+import Link from "next/link";
+import { FC } from "react";
 
 interface CatFeaturedStoryProps {
   story: IStory;
 }
 
 const CatFeaturedStory: FC<CatFeaturedStoryProps> = ({ story }) => {
-  const router = useRouter()
   return (
-    <div className="flex items-center gap-3 p-3 rounded-lg border hover:bg-muted/40 transition" onClick={()=> router.push(`/stories/view/${story._id}`)}>
+    <Link
+      href={`/stories/view/${story._id}`}
+      className="flex items-center gap-3 p-3 rounded-lg border hover:bg-muted/40 transition"
+    >
       {/* Thumbnail */}
-
       <img
         src={story.coverImage}
         alt={story.caption}
@@ -26,7 +27,7 @@ const CatFeaturedStory: FC<CatFeaturedStoryProps> = ({ story }) => {
           <span className="text-xs text-muted-foreground">#{story.slug}</span>
         )}
       </div>
-    </div>
+    </Link>
   );
 };
 

@@ -34,7 +34,7 @@ const Navbar: FC = () => {
   return (
     <div className="sticky top-0 z-50 bg-amber-50 text-amber-950 shadow-md backdrop-blur-sm">
       <div className="relative flex items-center justify-between p-4">
-        <div className="text-xl font-bold">🐱 Cat Rescue</div>
+        <div className="text-xl font-bold">🐱 Hiraya Rescue & Shelter</div>
 
         <Bars3BottomRightIcon
           className="w-10 cursor-pointer"

@@ -169,7 +169,7 @@ const AddCat: FC<AddCatProps> = () => {
       toast.success(`Welcome to the family, ${form.name}! 🐾`);
 
       setTimeout(() => {
-        router.push("/admin/cats/view");
+        router.push("/cats/view");
       }, 1000);
     } catch (error: any) {
       setErrors({ general: error.message });

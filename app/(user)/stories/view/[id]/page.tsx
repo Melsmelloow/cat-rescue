@@ -1,3 +1,4 @@
+import StoryView from "@/app/container/StoryView";
 import { connectDB } from "@/lib/mongodb";
 import { Cat } from "@/models/Cats";
 import { Stories } from "@/models/Stories";
@@ -44,6 +45,6 @@ export default async function Page({ params }: PageProps) {
       // redirect to 404
       return <div>Story not found</div>;
     }
-    return <div className="p-6">{/* <CatView {...formatCat(cat)} /> */}</div>;
+    return <StoryView story={formatStory(story)} />;
   }
 }

@@ -1,5 +1,6 @@
 "use client";
 import { IStory } from "@/models/Stories";
+import { useRouter } from "next/navigation";
 import React, { FC } from "react";
 
 interface CatFeaturedStoryProps {
@@ -7,8 +8,9 @@ interface CatFeaturedStoryProps {
 }
 
 const CatFeaturedStory: FC<CatFeaturedStoryProps> = ({ story }) => {
+  const router = useRouter()
   return (
-    <div className="flex items-center gap-3 p-3 rounded-lg border hover:bg-muted/40 transition">
+    <div className="flex items-center gap-3 p-3 rounded-lg border hover:bg-muted/40 transition" onClick={()=> router.push(`/stories/view/${story._id}`)}>
       {/* Thumbnail */}
 
       <img

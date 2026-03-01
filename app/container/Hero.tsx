@@ -1,7 +1,6 @@
 "use client";
 import { Button } from "@/components/ui/button";
 import { motion, Transition } from "motion/react";
-import { useSession } from "next-auth/react";
 import Link from "next/link";
 import { FC } from "react";
 
@@ -15,7 +14,6 @@ const floatingTransition: Transition = {
 };
 
 const Hero: FC<HeroProps> = () => {
-  const { data: session } = useSession();
   return (
     <section className="min-h-screen flex items-center px-6 md:px-16">
       <div className="grid md:grid-cols-2 gap-6 items-center w-full">
@@ -81,7 +79,7 @@ const Hero: FC<HeroProps> = () => {
         </div>
         {/* CTA Buttons */}
         <div className="flex sm:flex-row justify-center gap-4 pt-2">
-          <Link href={session ? "/admin/cats/view" : "cats/view"}>
+          <Link href="/cats/view">
             <Button className="bg-amber-600 hover:bg-amber-700 text-white rounded-full px-6 py-3 shadow-md mx-auto">
               Browse Cats 🐱
             </Button>

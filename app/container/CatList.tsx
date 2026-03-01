@@ -1,10 +1,9 @@
 "use client";
 import { ICat } from "@/models/Cats";
 import { motion } from "framer-motion";
+import { useRouter } from "next/navigation";
 import { FC } from "react";
 import CatCard from "./CatCard";
-import { useRouter } from "next/navigation";
-import { useSession } from "next-auth/react";
 
 interface CatListProps {
   cats: ICat[];
@@ -12,7 +11,6 @@ interface CatListProps {
 
 const CatList: FC<CatListProps> = ({ cats }) => {
   const router = useRouter();
-  const { data: session } = useSession();
 
   return (
     <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 p-6">
@@ -27,10 +25,7 @@ const CatList: FC<CatListProps> = ({ cats }) => {
           }}
           viewport={{ once: true }}
           onClick={() => {
-            const redirectURL = session
-              ? `/admin/cats/view/${cat._id}`
-              : `/cats/view/${cat._id}`;
-            router.push(redirectURL);
+            router.push(`/cats/view/${cat._id}`);
           }}
         >
           <CatCard {...cat} />

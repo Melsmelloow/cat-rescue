@@ -12,7 +12,7 @@ import { useRouter } from "next/navigation";
 import { toast, ToastContainer } from "react-toastify";
 import Loading from "@/app/container/Loading";
 import { Checkbox } from "@/components/ui/checkbox";
-
+import { useSearchParams } from "next/navigation";
 interface Cat {
   _id: string;
   name: string;
@@ -24,6 +24,8 @@ interface AddStoryProps {
 
 const AddStory: FC<AddStoryProps> = ({ cats }) => {
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const catIdFromQuery = searchParams.get("catId");
 
   const [form, setForm] = useState({
     caption: "",
@@ -31,7 +33,9 @@ const AddStory: FC<AddStoryProps> = ({ cats }) => {
     featured: false,
   });
 
-  const [selectedCats, setSelectedCats] = useState<string[]>([]);
+  const [selectedCats, setSelectedCats] = useState<string[]>(
+    catIdFromQuery ? [catIdFromQuery] : [],
+  );
 
   const [tagInput, setTagInput] = useState("");
   const [tags, setTags] = useState<string[]>([]);
@@ -148,7 +152,7 @@ const AddStory: FC<AddStoryProps> = ({ cats }) => {
       toast.success("Story created successfully 🎉");
 
       setTimeout(() => {
-        router.push("/admin/stories/view");
+        router.push("/stories/view");
       }, 1000);
     } catch (error: any) {
       setErrors({ general: error.message });

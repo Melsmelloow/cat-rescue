@@ -4,7 +4,7 @@ import Link from "next/link";
 
 function Donation() {
   return (
-    <section className="mt-16 p-6">
+    <section className="mt-16 p-6" id="donation">
       <div className="rounded-2xl bg-amber-50 border border-amber-200 shadow-md p-8 max-w-3xl mx-auto text-center">
         {/* Title */}
         <h1 className="text-4xl md:text-5xl font-bold text-amber-900 mb-4">

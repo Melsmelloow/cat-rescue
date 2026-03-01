@@ -9,15 +9,12 @@ import {
   CarouselPrevious,
 } from "@/components/ui/carousel";
 import { TStory } from "@/types/story";
-import { useEffect, useState } from "react";
-import StoryCard from "./StoryCard";
 import Autoplay from "embla-carousel-autoplay";
-import { useRef } from "react";
-import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
+import { useEffect, useRef, useState } from "react";
+import StoryCard from "./StoryCard";
 
 const FeaturedStories = () => {
-  const { data: session } = useSession();
   const router = useRouter();
   const autoplay = useRef(
     Autoplay({
@@ -77,10 +74,7 @@ const FeaturedStories = () => {
           variant="ghost"
           className="p-0 h-auto text-amber-700 underline hover:no-underline hover:bg-transparent"
           onClick={() => {
-            const redirectUrl = session
-              ? "/admin/stories/view"
-              : "stories/view";
-              router.push(redirectUrl);
+            router.push("/stories/view");
           }}
         >
           View more stories

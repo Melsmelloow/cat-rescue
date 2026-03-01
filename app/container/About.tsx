@@ -3,7 +3,7 @@ import React from "react";
 
 function About() {
   return (
-    <div className="mt-6 max-w-4xl text-center p-6">
+    <div className="mt-6 max-w-4xl text-center p-6" id="about">
       <h1 className="text-4xl md:text-5xl font-bold text-amber-900 mb-6">
         About Us
       </h1>
@@ -40,8 +40,8 @@ function About() {
 
         <p>
           Thank you for being part of this journey. Whether you donate, share,
-          or simply read their stories, you are helping change lives one cat
-          at a time.
+          or simply read their stories, you are helping change lives one cat at
+          a time.
         </p>
       </div>
     </div>

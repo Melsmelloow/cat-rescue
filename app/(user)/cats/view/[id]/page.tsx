@@ -35,8 +35,10 @@ export default async function Page({ params }: PageProps) {
       // redirect to 404
       return <div>Cat not found</div>;
     }
+
+    console.log(formatCat(cat));
     return (
-      <div className="p-6">
+      <div className="p-6 mb-10">
         <CatView {...formatCat(cat)} />
       </div>
     );

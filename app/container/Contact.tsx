@@ -5,7 +5,7 @@ import Link from "next/link";
 
 function Contact() {
   return (
-    <section className="mt-10">
+    <section className="mt-10" id="contact">
       <div className="max-w-xl mx-auto text-center">
         <h1 className="text-4xl md:text-5xl font-bold text-amber-900 mb-6">
           Connect with us

@@ -5,6 +5,7 @@ import "./globals.css";
 import { headers } from "next/headers";
 import Image from "next/image";
 import Providers from "./provider";
+import MobileBottomNav from "./container/MobileBottomNav";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -48,11 +49,12 @@ export default async function RootLayout({
             </div>
           </div>
         ) : (
-           <Providers>
-          <div className={`${inter.className} font-sans`}>
-            <Navbar />
-           {children}
-          </div>
+          <Providers>
+            <div className={`${inter.className} font-sans`}>
+              <Navbar />
+              {children}
+              <MobileBottomNav />
+            </div>
           </Providers>
         )}
       </body>

@@ -11,7 +11,7 @@ const FloatingAddButton = ({ path }: { path: string }) => {
       onClick={() => router.push(path)}
       className="
         fixed 
-        bottom-6 
+        bottom-20 
         right-6 
         z-50
         flex 

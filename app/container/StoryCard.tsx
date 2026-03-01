@@ -94,7 +94,6 @@ const StoryCard: FC<StoryCardProps> = ({ story }) => {
         router.push(`/stories/view/${story._id}`);
       }}
     >
-     
       <div className="relative">
         <img
           src={story.coverImage}

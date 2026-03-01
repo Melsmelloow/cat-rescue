@@ -6,8 +6,8 @@ export const MENU_ITEMS = [
 
 export const ADMIN_MENU_ITEMS = [
   { label: "Home", href: "/" },
-  { label: "Cats", href: "/admin/cats/view" },
-  { label: "Stories", href: "/admin/stories/view" },
+  { label: "Cats", href: "/cats/view" },
+  { label: "Stories", href: "/stories/view" },
   { label: "About", href: "/about" },
   { label: "Contact", href: "/contact" },
 ];

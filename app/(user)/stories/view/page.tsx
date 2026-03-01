@@ -70,7 +70,7 @@ export default function StoryFeed() {
 
   return (
     <>
-      <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 p-6">
+      <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 p-6 mb-10">
         {stories.map((story) => (
           <StoryCard story={story} key={story._id} />
         ))}

@@ -2,8 +2,7 @@
 import { TStory } from "@/types/story";
 import { HeartIcon as HeartOutline } from "@heroicons/react/24/outline";
 import { HeartIcon as HeartSolid } from "@heroicons/react/24/solid";
-import { motion } from "framer-motion";
-import { useSession } from "next-auth/react";
+import { AnimatePresence, motion } from "framer-motion";
 import { useRouter } from "next/navigation";
 import { FC, useEffect, useState } from "react";
 
@@ -12,7 +11,6 @@ interface StoryCardProps {
 }
 
 const StoryCard: FC<StoryCardProps> = ({ story }) => {
-  const { data: session, status } = useSession();
   const router = useRouter();
   const [liked, setLiked] = useState(false);
   const [likeCount, setLikeCount] = useState(story.likes || 0);
@@ -93,17 +91,57 @@ const StoryCard: FC<StoryCardProps> = ({ story }) => {
       key={story._id as unknown as string}
       className="bg-white rounded-xl shadow border overflow-hidden"
       onClick={() => {
-        const redirectUrl = session
-          ? `/admin/stories/view/${story._id}`
-          : `/stories/view/${story._id}`;
-        router.push(redirectUrl);
+        router.push(`/stories/view/${story._id}`);
       }}
     >
-      <img
-        src={story.coverImage}
-        alt={story.caption}
-        className="w-full h-60 object-cover"
-      />
+     
+      <div className="relative">
+        <img
+          src={story.coverImage}
+          alt={story.caption}
+          className="w-full h-60 object-cover"
+        />
+
+        <AnimatePresence>
+          {animateHeart && (
+            <motion.div
+              initial={{ opacity: 0, scale: 0.5, y: 0, rotate: -15 }}
+              animate={{
+                opacity: [0, 1, 1, 0],
+                scale: [0.5, 1.8, 1.6],
+                y: [0, -60, -120],
+                rotate: [-15, 10, -5],
+              }}
+              transition={{ duration: 1, ease: "easeOut" }}
+              className="absolute inset-0 flex items-center justify-center pointer-events-none z-10"
+            >
+              <svg
+                viewBox="0 0 24 24"
+                className="w-24 h-24 drop-shadow-[0_0_25px_rgba(236,72,153,0.6)]"
+              >
+                <defs>
+                  <linearGradient
+                    id="heartGradient"
+                    x1="0%"
+                    y1="0%"
+                    x2="100%"
+                    y2="100%"
+                  >
+                    <stop offset="0%" stopColor="#f43f5e" />
+                    <stop offset="50%" stopColor="#d946ef" />
+                    <stop offset="100%" stopColor="#7c3aed" />
+                  </linearGradient>
+                </defs>
+
+                <path
+                  fill="url(#heartGradient)"
+                  d="M11.644 20.91l-.007-.003-.022-.012a15.247 15.247 0 01-2.02-1.25 14.687 14.687 0 01-2.793-2.377C4.01 14.68 2 11.805 2 8.5 2 5.462 4.462 3 7.5 3c1.74 0 3.38.81 4.5 2.09A6.002 6.002 0 0116.5 3C19.538 3 22 5.462 22 8.5c0 3.305-2.01 6.18-4.802 8.768a14.687 14.687 0 01-2.793 2.377 15.247 15.247 0 01-2.02 1.25l-.022.012-.007.003a.75.75 0 01-.712 0z"
+                />
+              </svg>
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </div>
 
       <div className="p-4 space-y-2">
         <h2 className="font-semibold text-lg">{story.caption}</h2>
@@ -129,7 +167,8 @@ const StoryCard: FC<StoryCardProps> = ({ story }) => {
             )}
           </div>
           <button
-            onClick={() => {
+            onClick={(e) => {
+              e.stopPropagation();
               handleLike();
               if (!liked) {
                 setAnimateHeart(true);

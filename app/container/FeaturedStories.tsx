@@ -13,8 +13,12 @@ import { useEffect, useState } from "react";
 import StoryCard from "./StoryCard";
 import Autoplay from "embla-carousel-autoplay";
 import { useRef } from "react";
+import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
 
 const FeaturedStories = () => {
+  const { data: session } = useSession();
+  const router = useRouter();
   const autoplay = useRef(
     Autoplay({
       delay: 4000, // 4 seconds
@@ -26,6 +30,7 @@ const FeaturedStories = () => {
   const fetchFeaturedStories = async () => {
     try {
       const response = await fetch("/api/stories/view/featured");
+      console.log(response);
       const data = await response.json();
       setStories(data.data);
     } catch (error) {
@@ -48,10 +53,10 @@ const FeaturedStories = () => {
       </h1>
 
       <Carousel
-  opts={{ align: "start", loop: true }}
-  plugins={[autoplay.current]}
-  className="max-w-70 mx-auto"
->
+        opts={{ align: "start", loop: true }}
+        plugins={[autoplay.current]}
+        className="max-w-70 mx-auto"
+      >
         {/* THIS is the key wrapper */}
         <div className="max-w-lg mx-auto">
           <CarouselContent>
@@ -67,8 +72,19 @@ const FeaturedStories = () => {
         </div>
       </Carousel>
 
-      <div className="text-center mt-10">
-        <Button variant="outline">View more stories</Button>
+      <div className="text-center mt-2">
+        <Button
+          variant="ghost"
+          className="p-0 h-auto text-amber-700 underline hover:no-underline hover:bg-transparent"
+          onClick={() => {
+            const redirectUrl = session
+              ? "/admin/stories/view"
+              : "stories/view";
+              router.push(redirectUrl);
+          }}
+        >
+          View more stories
+        </Button>
       </div>
     </section>
   );

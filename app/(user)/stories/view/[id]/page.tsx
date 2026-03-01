@@ -1,8 +1,8 @@
-import StoryView from "@/app/container/StoryView";
 import { connectDB } from "@/lib/mongodb";
-import { Cat } from "@/models/Cats";
 import { Stories } from "@/models/Stories";
 import mongoose from "mongoose";
+import "@/models/Cats";
+import StoryView from "@/app/container/StoryView";
 
 interface PageProps {
   params: Promise<{

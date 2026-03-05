@@ -8,7 +8,10 @@ import { useSession } from "next-auth/react";
 import { Button } from "@/components/ui/button";
 import { signOut } from "next-auth/react";
 
-const Menu: React.FC<{ isAdmin: boolean }> = ({ isAdmin }) => {
+const Menu: React.FC<{
+  isAdmin: boolean;
+  closeMenu: () => void;
+}> = ({ isAdmin, closeMenu }) => {
   const menuItems = isAdmin ? ADMIN_MENU_ITEMS : MENU_ITEMS;
   return (
     <>
@@ -17,6 +20,7 @@ const Menu: React.FC<{ isAdmin: boolean }> = ({ isAdmin }) => {
           <a
             href={item.href}
             className="block px-4 py-2 text-md text-gray-700 hover:bg-amber-100 text-left"
+            onClick={() => closeMenu()}
           >
             {item.label}
           </a>
@@ -67,7 +71,10 @@ const Navbar: FC = () => {
                   </div>
                 )}
 
-                <Menu isAdmin={status === "authenticated" ? true : false} />
+                <Menu
+                  isAdmin={status === "authenticated" ? true : false}
+                  closeMenu={() => setIsMenuOpen(false)}
+                />
               </div>
             </motion.div>
           )}

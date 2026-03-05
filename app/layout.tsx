@@ -22,6 +22,7 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  
   const headersList = await headers();
   const userAgent = headersList.get("user-agent") || "";
 

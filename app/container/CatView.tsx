@@ -18,6 +18,19 @@ import { useSession } from "next-auth/react";
 import Link from "next/link";
 import { FC, useEffect, useState } from "react";
 import CatFeaturedStory from "./CatFeaturedStory";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+  DialogClose,
+} from "@/components/ui/dialog";
+import { TrashIcon } from "@heroicons/react/24/outline";
+import { useRouter } from "next/navigation";
+
 
 interface CatViewProps extends Omit<ICat, "_id"> {
   _id: string;
@@ -36,12 +49,29 @@ const CatView: FC<CatViewProps> = ({
   stories,
 }) => {
   const hasImages = images.length > 0;
+  const router = useRouter();
   const { data: session } = useSession();
   const [liked, setLiked] = useState(false);
   const [likeCount, setLikeCount] = useState(likes);
   const [loading, setLoading] = useState(false);
   const [animateHeart, setAnimateHeart] = useState(false);
 
+  const handleDelete = async () => {
+    try {
+      const res = await fetch(`/api/admin/cats/${_id}/delete`, {
+        method: "DELETE",
+      });
+
+      if (!res.ok) {
+        throw new Error("Failed to delete");
+      }
+
+      router.push("/cats/view");
+    } catch (err) {
+      console.error(err);
+      alert("Failed to delete cat");
+    }
+  };
   // 🔐 Get or create deviceId
   const getDeviceId = () => {
     let deviceId = localStorage.getItem("device_id");
@@ -113,6 +143,35 @@ const CatView: FC<CatViewProps> = ({
   return (
     <>
       <div className="relative bg-white rounded-3xl shadow-lg overflow-hidden">
+        {session && (
+          <Dialog>
+            <DialogTrigger asChild>
+              <button className="absolute bottom-6 right-6 bg-white/90 backdrop-blur-md p-2 rounded-full shadow-md z-20 hover:bg-red-50">
+                <TrashIcon className="w-5 h-5 text-red-500" />
+              </button>
+            </DialogTrigger>
+
+            <DialogContent className="sm:max-w-sm">
+              <DialogHeader>
+                <DialogTitle>Delete {name}?</DialogTitle>
+                <DialogDescription>
+                  This action cannot be undone. This will permanently delete
+                  this cat.
+                </DialogDescription>
+              </DialogHeader>
+
+              <DialogFooter className="gap-2 flex">
+                <DialogClose asChild>
+                  <Button variant="outline">Cancel</Button>
+                </DialogClose>
+
+                <Button variant="destructive" onClick={handleDelete}>
+                  Delete
+                </Button>
+              </DialogFooter>
+            </DialogContent>
+          </Dialog>
+        )}
         {/* Floating Heart Animation (UNCHANGED LOGIC) */}
         <AnimatePresence>
           {animateHeart && (

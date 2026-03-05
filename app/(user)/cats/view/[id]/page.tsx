@@ -36,7 +36,6 @@ export default async function Page({ params }: PageProps) {
       return <div>Cat not found</div>;
     }
 
-    console.log(formatCat(cat));
     return (
       <div className="p-6 mb-10">
         <CatView {...formatCat(cat)} />

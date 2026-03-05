@@ -31,7 +31,6 @@ import {
 import { TrashIcon } from "@heroicons/react/24/outline";
 import { useRouter } from "next/navigation";
 
-
 interface CatViewProps extends Omit<ICat, "_id"> {
   _id: string;
   stories: IStory[];
